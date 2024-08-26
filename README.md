@@ -1,4 +1,6 @@
-# Polars LLM bot
+# Capstone Exercise: building a StackOverflow Chatbot
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/datamindedacademy/capstone-llm)
 
 1. We ingest popular StackOverflow questions per summer school course topic (dbt, SQL, Airflow, Polars, Spark, Docker) and answers from Stack Exchange API to an S3 bucket.
 2. The job of the participants of the summer school is to read in the data, join the questions and answers, clean the data, and write individual questions with their answers to a location accessible by Bedrock.
