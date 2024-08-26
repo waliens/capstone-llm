@@ -18,4 +18,4 @@ image:
 vscode:
   extensions:
     - ms-python.python
-    - ms-python.vscode-pylance
+    - vscodevim.vim
