@@ -1,2 +1,6 @@
 .venv
 *.ipynb
+
+config
+logs
+plugins

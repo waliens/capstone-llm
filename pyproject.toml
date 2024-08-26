@@ -2,11 +2,11 @@
 name = "summer-school-llm-bot"
 version = "0.1.0"
 description = ""
-authors = ["Jan Vanbuel <jan.vanbuel@ond.vlaanderen.be>"]
+authors = ["Jan Vanbuel <jan.vanbuel@dataminded.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 requests = "^2.32.3"
 boto3 = "^1.35.2"
 pyspark = "^3.5.2"

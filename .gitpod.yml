@@ -19,3 +19,4 @@ vscode:
   extensions:
     - ms-python.python
     - vscodevim.vim
+    - tamasfe.even-better-toml
