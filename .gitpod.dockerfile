@@ -9,4 +9,4 @@ RUN wget "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -O "awscliv2
     sudo ./aws/install --install-dir /opt/aws-cli --bin-dir /usr/local/bin/ && \
     sudo chmod a+x /opt/
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -sSL https://install.python-poetry.org | python3 - && poetry config virtualenvs.in-project true
