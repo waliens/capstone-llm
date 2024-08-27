@@ -4,12 +4,13 @@ from pyspark.sql.dataframe import DataFrame
 import pyspark.sql.functions as f
 from pyspark.sql import SparkSession
 
+from stackoverflowetl.common.catalog import llm_bucket
 from stackoverflowetl.common.spark import ClosableSparkSession
 
 
 def clean(spark: SparkSession, environment: str, tag: str):
     questions = spark.read.json(
-        f"s3a://seasonal-schools-bedrock-data-us/input/{tag}/questions.json"
+        f"s3a://{llm_bucket}/input/{tag}/questions.json"
     )
 
     df = questions.withColumn("question", f.explode("items"))
@@ -20,7 +21,7 @@ def clean(spark: SparkSession, environment: str, tag: str):
     df.show()
 
     answers = spark.read.json(
-        f"s3a://seasonal-schools-bedrock-data-us/input/{tag}/answers.json"
+        f"s3a://{llm_bucket}/input/{tag}/answers.json"
     )
 
     dfa = answers.withColumn("answer", f.explode("items"))
@@ -36,7 +37,7 @@ def clean(spark: SparkSession, environment: str, tag: str):
     concatenated = joined.select(f.concat(*joined.columns).alias("data"))
     count = concatenated.count()
     concatenated.repartition(count).write.mode("overwrite").text(
-        f"s3a://seasonal-schools-bedrock-data-us/cleaned/{tag}/"
+        f"s3a://{llm_bucket}/cleaned/{tag}/"
     )
 
 
@@ -52,10 +53,22 @@ def main():
         "-t", "--tag", dest="tag", help="the tag to process",
         default="python-polars", required=False
     )
-    args = parser.parse_args()
 
-    with ClosableSparkSession("stackoverflow_etl") as session:
+    args = parser.parse_args()
+    common_spark_config = {
+        "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+        "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.DefaultAWSCredentialsProviderChain",
+    }
+    if args.env == "local":
+        session = (
+            SparkSession.builder.appName("Spark S3 Integration")
+            .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.4")
+            .getOrCreate()
+        )
         clean(session, args.env, args.tag)
+    else:
+        with ClosableSparkSession("stackoverflow_etl", spark_config=common_spark_config) as session:
+            clean(session, args.env, args.tag)
 
 
 if __name__ == "__main__":

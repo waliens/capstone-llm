@@ -27,7 +27,7 @@ ingest_task = ConveyorContainerOperatorV2(
     dag=dag,
     task_id="ingest",
     instance_type="mx.small",
-    aws_role="stackoverflow_etl-{{ macros.conveyor.env() }}",
+    aws_role="capstone_conveyor_llm",
     cmds=["python3", "-m", "stackoverflowetl.tasks.ingest"],
     arguments=["--date", "{{ ds }}", "--env", "{{ macros.conveyor.env() }}"],
 )
@@ -38,7 +38,7 @@ clean_task = ConveyorSparkSubmitOperatorV2(
     num_executors="1",
     driver_instance_type="mx.small",
     executor_instance_type="mx.small",
-    aws_role="stackoverflow_etl-{{ macros.conveyor.env() }}",
+    aws_role="capstone_conveyor_llm",
     spark_main_version=3,
     application="local:///opt/spark/work-dir/src/stackoverflowetl/tasks/clean.py",
     application_args=["--date", "{{ ds }}", "--env", "{{ macros.conveyor.env() }}"],

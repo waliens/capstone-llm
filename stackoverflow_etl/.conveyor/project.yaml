@@ -1,6 +1,6 @@
 docker:
     path: .
-id: 02c7b7cf-b45e-4d60-9c44-3186a3b9dcdf
+id: d54050ae-c0c6-4071-8c0b-7d916ab7a429
 ide:
     filename: ide.yaml
 name: stackoverflow_etl
@@ -8,7 +8,7 @@ resources:
     path: resources
 streaming:
     filename: streaming.yaml
-template: project/pyspark
+template: ""
 version: "0.3"
 workflows:
     path: dags

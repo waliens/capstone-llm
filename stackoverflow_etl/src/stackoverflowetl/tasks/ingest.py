@@ -1,5 +1,5 @@
 import argparse
-import tempfile
+import os
 from typing import List
 
 import requests
@@ -7,6 +7,8 @@ import json
 import boto3
 import logging
 import uuid
+
+from stackoverflowetl.common.catalog import llm_bucket
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +31,7 @@ def ingest_tag(s3_client, tag: str):
         str(question["question_id"]) for question in response.json()["items"]
     ]
 
-    url = f"http://api.stackexchange.com/2.3/questions/{';'.join(question_ids)}/answers?order=desc&sort=votes&site=stackoverflow&filter=withbody"
+    url = f"http://api.stackexchange.com/2.3/questions/{';'.join(question_ids)}/answers?order=desc&sort=votes&site=stackoverflow&pagesiz=100&filter=withbody"
     response = requests.request("GET", url)
 
     response_json = response.json()
@@ -46,8 +48,9 @@ def upload_body_s3(response_json, s3_client, s3_key):
         f.write(json.dumps(response_json))
     s3_client.upload_file(
         filename,
-        "seasonal-schools-bedrock-data-us",
+        f"{llm_bucket}",
         s3_key,
+        ExtraArgs={'ServerSideEncryption': 'aws:kms', 'SSEKMSKeyId': 'arn:aws:kms:us-east-1:338791806049:alias/capstone_llm'}
     )
 
 
@@ -62,6 +65,7 @@ def validate_enough_quota(response_json):
 
 
 def ingest(tags: List[str]):
+    os.environ["DEFAULT_AWS_REGION"] = "us-east-1"
     s3_client = boto3.client("s3", region_name="us-east-1")
     for tag in tags:
         ingest_tag(s3_client, tag)
