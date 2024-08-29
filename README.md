@@ -9,10 +9,10 @@
 
 TODO:
 
-- [ ] Create a branch for instructors to prepare input data (ingest data from different SO tags) -> Niels
+- [x] Create a branch for instructors to prepare input data (ingest data from different SO tags) -> Niels
 - [ ] Add scaffolding for the participants to work on writing their cleaning script and Dockerfile -> Niels
 - [ ] Prepare Gitpod environment with Airflow Docker compose and DockerOperator (https://github.com/fclesio/airflow-docker-operator-with-compose for inspiration) -> Jan / Jonas
 - [ ] (Optional) Bedrock set up via Terraform -> Jan (if bored and too much time)
 - [ ] Set up lambda with ChatGPT and Bedrock (Rushil's code: https://github.com/datamindedbe/llm-hackathon) -> Jan
-- [ ] Make sure that conveyor can read/write to the S3 buckets (rewrite instructor setup? https://github.com/datamindedacademy/instructor_setups/tree/main/capstone-project) -> Niels
+- [x] Make sure that conveyor can read/write to the S3 buckets (rewrite instructor setup? https://github.com/datamindedacademy/instructor_setups/tree/main/capstone-project) -> Niels
 - [ ] Use SSO credentials for Gitpod environment -> Jan
