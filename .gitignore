@@ -1,6 +1,9 @@
 .venv
 *.ipynb
 
+**/__pycache__/
+
 config
 logs
 plugins
+
