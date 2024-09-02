@@ -18,7 +18,9 @@ tasks:
   - name: Install python dependencies
     command: |
       pip3 install -r requirements.txt
-
+  - name: Install JAVA
+    command: |
+      sudo apt-get install openjdk-8-jdk-headless -qq
   - name: Boot Airflow
     init: |
       gp sync-await pull
@@ -28,8 +30,7 @@ tasks:
   - name: Assume AWS role, set environment variables
     command: |
       gp idp login aws --role-arn arn:aws:iam::338791806049:role/seasonal-school-gitpod-role --duration-seconds 28800
-      eval "$(aws configure export-credentials --format env)" 
-
+      eval "$(aws configure export-credentials --format env)"
 
 image:
   file: .gitpod.dockerfile
