@@ -25,15 +25,13 @@ tasks:
   - name: Boot Airflow
     init: |
       gp sync-await pull
-      gp sync-await aws
       docker-compose up airflow-init
-    command: |
-      docker compose up -d
   - name: Assume AWS role, set environment variables
     init: |
       gp idp login aws --role-arn arn:aws:iam::338791806049:role/seasonal-school-gitpod-role --duration-seconds 28800
       eval "$(aws configure export-credentials --format env)"
-      gp sync-done aws
+
+
 
 image:
   file: .gitpod.dockerfile
