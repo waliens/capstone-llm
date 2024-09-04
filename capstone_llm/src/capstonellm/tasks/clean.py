@@ -2,7 +2,6 @@ import argparse
 import logging
 from pyspark.sql import SparkSession
 
-from capstonellm.common.catalog import llm_bucket
 from capstonellm.common.spark import ClosableSparkSession
 
 logger = logging.getLogger(__name__)

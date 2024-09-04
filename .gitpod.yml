@@ -18,6 +18,9 @@ tasks:
   - name: Install python dependencies
     command: |
       pip3 install -r requirements.txt
+      python -m venv .venv
+      source .venv/bin/activate
+      pip3 install -r requirements.txt
   - name: Install JAVA
     command: |
       sudo apt-get update
