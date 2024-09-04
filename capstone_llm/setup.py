@@ -7,10 +7,10 @@ from setuptools import find_packages, setup
 
 
 setup(
-    name="stackoverflowetl",
+    name="capstonellm",
     version="0.0.1",
-    description="pyspark sample template",
-    python_requires=">=3.9",
+    description="Capstone llm project",
+    python_requires=">=3.11",
     packages=find_packages("src"),
     package_dir={"": "src"},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
