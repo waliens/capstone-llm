@@ -12,9 +12,6 @@ def clean(spark: SparkSession, environment: str, tag: str):
 def main():
     parser = argparse.ArgumentParser(description="capstone_llm")
     parser.add_argument(
-        "-d", "--date", dest="date", help="date in format YYYY-mm-dd", required=True
-    )
-    parser.add_argument(
         "-e", "--env", dest="env", help="environment we are executing in", required=True
     )
     parser.add_argument(

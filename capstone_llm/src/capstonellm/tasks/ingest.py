@@ -4,14 +4,11 @@ from typing import List
 import logging
 logger = logging.getLogger(__name__)
 
-def ingest(tags: List[str]):
+def ingest(tag: str):
     pass
 
 def main():
     parser = argparse.ArgumentParser(description="stackoverflow ingest")
-    parser.add_argument(
-        "-d", "--date", dest="date", help="date in format YYYY-mm-dd", required=True
-    )
     parser.add_argument(
         "-e", "--env", dest="env", help="environment we are executing in", required=True
     )
