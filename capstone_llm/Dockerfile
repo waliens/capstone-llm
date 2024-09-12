@@ -4,4 +4,14 @@ USER 0
 ENV PYSPARK_PYTHON python3
 WORKDIR /opt/spark/work-dir
 
-#TODO add your project code and dependencies to the image
+COPY ./requirements.txt /opt/spark/work-dir/requirements.txt
+
+RUN pip install -r requirements.txt
+
+COPY ./src /opt/spark/work-dir/src
+COPY ./setup.py /opt/spark/work-dir/setup.py
+
+RUN pip install -e .
+
+ENTRYPOINT ["python3", "-m", "capstonellm.tasks.clean"]
+CMD ["-e", "local"]
