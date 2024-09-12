@@ -1,13 +1,64 @@
 import argparse
 import logging
 from pyspark.sql import SparkSession
+import  pyspark.sql.functions as psf
+import boto3
 
 from capstonellm.common.spark import ClosableSparkSession
 
 logger = logging.getLogger(__name__)
 
 def clean(spark: SparkSession, environment: str, tag: str):
-    pass
+    tags = ["airflow", "apache-spark", "dbt", "docker", "pyspark", "python-polars", "sql"]
+    
+    for tag in tags:
+        questions = spark.read.json(f"s3a://dataminded-academy-capstone-llm-data-us/input/{tag}/questions.json")
+        answers = spark.read.json(f"s3a://dataminded-academy-capstone-llm-data-us/input/{tag}/answers.json")
+        cleaned_data = clean_data(questions, answers)
+        write_data(cleaned_data,tag)
+       
+def write_data(data, tag):
+    bucket = "dataminded-academy-capstone-llm-data-us"
+    s3_client = boto3.client('s3')
+    for row in data.collect():
+       
+        s3_client.put_object(Bucket=bucket, Key=f"cleaned/{tag}/{row['question_id']}.txt", Body=row['content']
+            )
+
+
+def clean_data(questions, answers):
+    cleaned_questions = clean_questions(questions)
+    cleaned_answers = clean_answers(answers)
+    cleaned_data = cleaned_questions.join(
+        cleaned_answers,
+        on="question_id",
+        how="inner"
+    )
+    return cleaned_data.select(
+        psf.col("question_id"),
+        psf.concat("title","body","answer")
+            .alias("content")
+    )
+def clean_questions(questions):
+    cleaned_questions = questions.select(psf.explode(psf.col("items")).alias("items"))
+    cleaned_questions = cleaned_questions.select(
+        psf.col("items.title"),
+        psf.col("items.body"),
+        psf.col("items.question_id").alias("question_id"),
+    )
+    return cleaned_questions
+ 
+def clean_answers(answers):
+    cleaned_answers = answers.select(psf.explode(psf.col("items")).alias("items"))
+    cleaned_answers = cleaned_answers.select(
+        psf.col("items.body").alias("answer"),
+        psf.col("items.question_id").alias("question_id"),
+        psf.col("items.is_accepted").alias("is_accepted")
+    ).filter(
+        psf.col("is_accepted") == "True"
+    )
+    return cleaned_answers
+ 
 
 def main():
     parser = argparse.ArgumentParser(description="capstone_llm")
