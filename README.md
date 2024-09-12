@@ -40,18 +40,24 @@ Best is to use the scaffolding as is, as that will make sure you quickly get som
 
 ```bash
 root/
- |-- src/
- |   |-- project/
- |   |-- |-- common/
- |   |-- |-- |-- spark.py
- |   |-- |-- tasks/
- |-- tests/
- |   |-- common/
- |   |-- | -- spark.py
- |   Dockerfile
- |   setup.py
+   | capstone_llm
+      |-- src/
+      |   |-- project/
+      |   |-- |-- common/
+      |   |-- |-- |-- spark.py
+      |   |-- |-- tasks/
+      |-- tests/
+      |   |-- common/
+      |   |-- | -- spark.py
+      |   Dockerfile
+      |   setup.py
+   | .gitpod.yml
+   | .gitpod.dockerfile
+   | docker-compose.yaml
 ```
+## Getting started
 
+The following commands are assumed to run in the `capstone_llm` subdirectory.
 - create a virtualenv: `python3 -m venv venv`
 - using dependencies: 
   - add the dependencies to the requirements.in
@@ -71,7 +77,8 @@ root/
 ### Context
 Our team already ingested questions and answers from StackOverflow for you to use. 
 We used the [stackoverflow API](https://api.stackexchange.com/docs).
-We ingested different tags, pick one of them as a starting point for cleaning your data.
+We ingested different tags, pick one of them with your table (3-4 peopla) as a starting point for cleaning your data.
+This helps to distribute who is working on which data.
 
 The input data is stored in the following s3 bucket: `dataminded-academy-capstone-llm-data-us` under path `input/{tag}/`
 The S3 bucket resides in us-east-1 region.
@@ -81,7 +88,7 @@ The S3 bucket resides in us-east-1 region.
 Start from the input data for 1 tag, the goal is to create 1 text document per question containing the title, question body and the response body.
 So your goal is to extract the relevant fields from both the questions and answers and join them together using the `question_id` field.
 
-Write the text documents per question again to s3 under path `cleaned/{tag}`
+Write the json documents per question again to s3 under path `cleaned/{tag}`
 
 If you are confident in your code, the next step is scheduling it using Airflow
 
@@ -128,7 +135,6 @@ In our case this will be Conveyor.
 - create a dags folder in `capstone_llm` subfolder and migrate your local dags to Conveyor by using the [ConveyorContainerOperatorV2](https://docs.conveyordata.com/technical-reference/airflow/operators/conveyor-container-operator-v2) and the [ConveyorSparkSubmitOperatorV2](https://docs.conveyordata.com/technical-reference/airflow/operators/conveyor-spark-submit-operator-v2)
   - instead of using the AWS credentials directly, you should attach the `capstone_conveyor_llm` role when running your tasks.  
 - build and deploy your project
-
 
 ## Useful commands
 Setup virtual environment:

@@ -10,9 +10,6 @@ def ingest(tag: str):
 def main():
     parser = argparse.ArgumentParser(description="stackoverflow ingest")
     parser.add_argument(
-        "-e", "--env", dest="env", help="environment we are executing in", required=True
-    )
-    parser.add_argument(
         "-t", "--tag", dest="tag", help="Tag of the question in stackoverflow to process",
         default="python-polars", required=False
     )
