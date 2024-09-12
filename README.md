@@ -105,9 +105,15 @@ We start with a local installation of Airflow, you can use the `docker-compose.y
 ## Task 3: Test out the basic llm
 
 The next step is to start using your prepared data in the llm.
-Before feeding the data, let's test the performance of the current model.
+Before feeding the data, let's test the performance of the current model by asking it some questions:
 
-TODO
+```
+curl --location 'https://kfkjc4ha7crhz6s3uat54wtj6m0bgtdf.lambda-url.eu-west-1.on.aws' \
+--header 'Content-Type: application/json' \
+--data '{
+    "query":"What is the equivalent of `DataFrame.drop_duplicates()` from pandas in polars?"
+}'
+```
 
 ### Your task
 
