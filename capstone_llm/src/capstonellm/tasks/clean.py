@@ -46,10 +46,6 @@ def clean(spark: SparkSession, environment: str, tag: str):
         for row in content.collect():
             s3_client.put_object(Bucket=bucket, Key=f"cleaned/{tag}/{row['question_id']}.txt", Body=row['content'])
 
-
-
-
-        
     
 
 def main():
