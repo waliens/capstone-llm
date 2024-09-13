@@ -1,0 +1,15 @@
+docker:
+    path: .
+id: a7dca1bc-c51e-46e5-a93c-a3ab565fc04b
+ide:
+    filename: ide.yaml
+name: capstone-asmaa
+resources:
+    path: resources
+streaming:
+    filename: streaming.yaml
+template: ""
+version: "0.3"
+workflows:
+    path: dags
+    version: "2"
