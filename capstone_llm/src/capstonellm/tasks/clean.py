@@ -36,7 +36,7 @@ def clean_data(questions, answers):
     )
     return cleaned_data.select(
         psf.col("question_id"),
-        psf.concat("title","body","answer")
+        psf.concat("title","body","answer", "link")
             .alias("content")
     )
 def clean_questions(questions):
@@ -44,6 +44,7 @@ def clean_questions(questions):
     cleaned_questions = cleaned_questions.select(
         psf.col("items.title"),
         psf.col("items.body"),
+        psf.col("item.link"),
         psf.col("items.question_id").alias("question_id"),
     )
     return cleaned_questions
