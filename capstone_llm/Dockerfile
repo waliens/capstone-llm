@@ -15,5 +15,5 @@ COPY ./setup.py /opt/spark/work-dir/setup.py
 
 RUN pip install -e .
 
-ENTRYPOINT ["python3", "-m", "capstonellm.tasks.clean"]
+#ENTRYPOINT ["python3", "-m", "capstonellm.tasks.clean"]
 CMD ["-e", "local"]
