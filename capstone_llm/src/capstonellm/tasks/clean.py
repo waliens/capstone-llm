@@ -44,7 +44,7 @@ def clean_questions(questions):
     cleaned_questions = cleaned_questions.select(
         psf.col("items.title"),
         psf.col("items.body"),
-        psf.col("item.link"),
+        psf.col("items.link").alias("link"),
         psf.col("items.question_id").alias("question_id"),
     )
     return cleaned_questions

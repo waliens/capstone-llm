@@ -25,35 +25,13 @@ with DAG(
 
     end_dag = EmptyOperator(task_id="end_dag")
 
-    t1 = BashOperator(task_id="print_current_date", bash_command="date")
-
-    t2 = DockerOperator(
+    task = DockerOperator(
         task_id="docker_command_sleep",
-        image="docker_image_task",
-        container_name="task___command_sleep",
+        image="capstone_image",
         api_version="auto",
         auto_remove=True,
-        command="/bin/sleep 30",
         docker_url="unix://var/run/docker.sock",
         network_mode="bridge",
     )
 
-    t3 = DockerOperator(
-        task_id="docker_command_hello",
-        image="docker_image_task",
-        container_name="task___command_hello",
-        api_version="auto",
-        auto_remove=True,
-        command="/bin/sleep 40",
-        docker_url="unix://var/run/docker.sock",
-        network_mode="bridge",
-    )
-
-    t4 = BashOperator(task_id="print_hello", bash_command='echo "hello world"')
-
-    start_dag >> t1
-
-    t1 >> t2 >> t4
-    t1 >> t3 >> t4
-
-    t4 >> end_dag
+    start_dag >> task >> end_dag
